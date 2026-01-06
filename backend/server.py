@@ -469,6 +469,23 @@ async def get_dashboard_stats(current_user: User = Depends(get_current_user)):
             "total_staff": total_staff,
             "total_clients": total_clients
         }
+    elif current_user.role == "staff":
+        total_invoices = await db.invoices.count_documents({"staff_id": current_user.id})
+        pending = await db.invoices.count_documents({"staff_id": current_user.id, "status": "pending"})
+        paid = await db.invoices.count_documents({"staff_id": current_user.id, "status": "paid"})
+        
+        pipeline = [
+            {"$match": {"staff_id": current_user.id, "status": "paid"}},
+            {"$group": {"_id": "$currency", "total": {"$sum": "$amount"}}}
+        ]
+        earnings = await db.invoices.aggregate(pipeline).to_list(100)
+        
+        return {
+            "total_invoices": total_invoices,
+            "pending_invoices": pending,
+            "paid_invoices": paid,
+            "earnings": earnings
+        }
     else:
         total_invoices = await db.invoices.count_documents({"client_id": current_user.id})
         pending = await db.invoices.count_documents({"client_id": current_user.id, "status": "pending"})
