@@ -1,164 +1,165 @@
 {
   "identity": {
-    "persona": "E1",
-    "mission": "Create a top 1% Web3 crypto payment platform that feels like a futuristic financial instrument, not a generic SaaS.",
-    "principles": [
-      "Fusion over Imitation: Mix Swiss Brutalism with Cyberpunk aesthetics.",
-      "Emotion First: Trust, Security, and Speed.",
-      "Content is King: Data (Money) is the hero.",
-      "Zoom In: Focus on the transaction details.",
-      "Negative Space: Luxurious breathing room.",
-      "Contrast: High contrast for readability in dark mode."
-    ]
+    "name": "E1",
+    "archetype": "The Anti-AI Designer",
+    "mission": "Create a premium, dark-mode Web3 experience that feels alive, not generic."
   },
-  "typography": {
-    "fonts": {
-      "heading": {
-        "family": "Space Grotesk",
-        "weights": ["Bold", "Medium"],
-        "usage": "Page titles, Section headers, Big numbers"
+  "design_system": {
+    "theme": "dark",
+    "typography": {
+      "headings": {
+        "family": "Space Grotesk, sans-serif",
+        "weights": ["700", "500"],
+        "tracking": "tracking-tight",
+        "usage": "Main headers, section titles. ALWAYS use tight tracking."
       },
       "body": {
-        "family": "Inter",
-        "weights": ["Regular", "Medium"],
-        "usage": "Paragraphs, UI labels, Form inputs"
+        "family": "Inter, sans-serif",
+        "weights": ["400", "500"],
+        "usage": "General text, descriptions."
       },
       "mono": {
-        "family": "JetBrains Mono",
-        "weights": ["Regular"],
-        "usage": "Crypto addresses, Transaction hashes, API keys"
+        "family": "JetBrains Mono, monospace",
+        "usage": "Crypto addresses, transaction hashes, currency amounts, data values.",
+        "class": "font-mono"
       }
     },
-    "rules": [
-      "Headings > 32px must use tracking-tight.",
-      "Overlines must be Uppercase + tracking-widest.",
-      "Line height: tight for headers, relaxed for body."
-    ]
-  },
-  "colors": {
-    "theme": "dark",
-    "palette": {
-      "background": {
-        "default": "#050505",
-        "paper": "#0A0A0B",
-        "subtle": "#121214"
+    "colors": {
+      "palette": {
+        "background": {
+          "default": "#050505",
+          "card": "#0A0A0B",
+          "subtle": "#121214"
+        },
+        "primary": {
+          "default": "#10B981",
+          "glow": "rgba(16, 185, 129, 0.5)",
+          "text": "#D1FAE5"
+        },
+        "accent": {
+          "purple": "#7C3AED",
+          "cyan": "#06B6D4",
+          "orange": "#F59E0B"
+        },
+        "text": {
+          "primary": "#FFFFFF",
+          "secondary": "#A1A1AA",
+          "muted": "#52525B"
+        },
+        "border": {
+          "default": "#27272A",
+          "active": "#3F3F46"
+        }
       },
-      "primary": {
-        "main": "#10B981",
-        "hover": "#059669",
-        "foreground": "#FFFFFF",
-        "description": "Neon Green for Success/Money/Action"
-      },
-      "secondary": {
-        "main": "#7C3AED",
-        "hover": "#6D28D9",
-        "foreground": "#FFFFFF",
-        "description": "Electric Purple for Tech/Admin/Brand"
-      },
-      "accent": {
-        "cyan": "#06B6D4",
-        "pink": "#EC4899"
-      },
-      "text": {
-        "primary": "#FAFAFA",
-        "secondary": "#A1A1AA",
-        "muted": "#52525B"
-      },
-      "border": {
-        "default": "#27272A",
-        "active": "#3F3F46"
+      "gradients": {
+        "hero": "radial-gradient(circle at top center, rgba(16, 185, 129, 0.15) 0%, rgba(5, 5, 5, 0) 70%)",
+        "card_glow": "radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%)",
+        "beam": "linear-gradient(to right, transparent, #10B981, transparent)"
       }
     },
-    "gradients": {
-      "hero": "linear-gradient(to right, #050505, #121214)",
-      "card_glow": "radial-gradient(circle at top right, rgba(124, 58, 237, 0.15), transparent 40%)",
-      "success_glow": "radial-gradient(circle at center, rgba(16, 185, 129, 0.2), transparent 70%)"
+    "spacing": {
+      "scale": "Generous. Use p-6, p-8, p-12 for containers. Gap-6 or Gap-8 for grids.",
+      "rule": "Containers with borders MUST have internal padding (p-6+) to prevent text collision."
+    },
+    "visual_enhancers": {
+      "glassmorphism": {
+        "class": "backdrop-blur-xl bg-black/40 border border-white/10 shadow-2xl",
+        "usage": "Overlays, sticky headers, floating cards."
+      },
+      "noise_texture": {
+        "instruction": "Add a fixed, pointer-events-none div with a noise background image at 3-5% opacity over the entire app to give it texture.",
+        "css": "background-image: url('https://grainy-gradients.vercel.app/noise.svg');"
+      },
+      "borders": {
+        "style": "1px solid border-white/10",
+        "radius": "rounded-xl or rounded-2xl"
+      }
     }
-  },
-  "layout": {
-    "spacing_scale": ["p-1", "p-2", "p-4", "p-6", "p-8", "p-12", "p-16", "p-24", "p-32"],
-    "grid_systems": {
-      "marketing": "Mode A: The Tetris Grid (Asymmetrical, Artistic)",
-      "dashboard": "Mode B: The Control Room Grid (Dense, Data-heavy, 4 columns)"
-    },
-    "container_rules": [
-      "Containers with borders MUST have internal padding (p-6 or p-8).",
-      "Never fill 100% of the grid perfectly in marketing pages.",
-      "Dashboard widgets must use h-full to stretch."
-    ]
   },
   "components": {
-    "style_preset": "Neo-Brutalist Cyber",
-    "radius": "rounded-md",
-    "shadows": "shadow-none",
-    "border_style": "1px solid #27272A",
-    "glassmorphism": {
-      "enabled": true,
-      "classes": "bg-black/40 backdrop-blur-xl border border-white/10"
-    },
     "buttons": {
-      "primary": "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(16,185,129,0.4)] transition-all",
-      "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/90",
-      "outline": "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+      "primary": "bg-primary text-black font-bold hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all duration-300 rounded-full px-8 py-3",
+      "secondary": "bg-white/5 border border-white/10 hover:bg-white/10 text-white transition-all rounded-full px-6 py-2",
+      "ghost": "text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-2"
     },
     "cards": {
-      "dashboard": "bg-card text-card-foreground border border-border shadow-sm hover:border-primary/50 transition-colors",
-      "marketing": "bg-transparent border border-white/10 backdrop-blur-md"
+      "base": "bg-[#0A0A0B] border border-white/5 rounded-2xl overflow-hidden relative group",
+      "hover_effect": "hover:border-primary/30 transition-colors duration-300",
+      "animated": "Use Framer Motion for entrance animations (opacity: 0, y: 20 -> opacity: 1, y: 0)"
     },
     "inputs": {
-      "style": "bg-background border-input focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+      "style": "bg-black/20 border border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 rounded-lg h-12 px-4 text-white placeholder:text-gray-600 transition-all"
+    },
+    "status_badges": {
+      "pending": "bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider",
+      "paid": "bg-green-500/10 text-green-500 border border-green-500/20 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider",
+      "failed": "bg-red-500/10 text-red-500 border border-red-500/20 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider"
     }
   },
-  "assets": {
-    "images": [
-      {
-        "category": "hero_background",
-        "url": "https://images.pexels.com/photos/30547584/pexels-photo-30547584.jpeg",
-        "description": "Abstract dark blockchain network with glowing nodes. Use for Login/Landing background with overlay."
-      },
-      {
-        "category": "feature_visual",
-        "url": "https://images.pexels.com/photos/28428592/pexels-photo-28428592.jpeg",
-        "description": "Futuristic 3D crypto coins floating. Use for 'Payment Success' or 'Wallet' section."
-      },
-      {
-        "category": "tech_abstract",
-        "url": "https://images.pexels.com/photos/30547566/pexels-photo-30547566.jpeg",
-        "description": "Dark abstract tech texture. Use for card backgrounds or subtle overlays."
+  "layout_strategies": {
+    "dashboard": {
+      "grid": "grid grid-cols-1 md:grid-cols-12 gap-6",
+      "areas": {
+        "stats": "col-span-full md:col-span-12 lg:col-span-8",
+        "profile": "col-span-full md:col-span-6 lg:col-span-4",
+        "invoices": "col-span-full"
       }
-    ],
-    "icons": {
-      "library": "lucide-react",
-      "style": "Stroke width 1.5px, distinct colors for actions (Green for money, Purple for admin)"
+    },
+    "client_page": {
+      "structure": "min-h-screen flex items-center justify-center p-4 relative overflow-hidden",
+      "container": "max-w-md w-full relative z-10"
     }
   },
   "motion": {
     "library": "framer-motion",
     "transitions": {
-      "default": "ease-out duration-300",
-      "hover": "scale-105 transition-transform duration-200"
+      "default": { "type": "spring", "stiffness": 300, "damping": 30 },
+      "slow": { "duration": 0.5, "ease": "easeInOut" }
     },
-    "animations": [
-      "Fade in up for page content",
-      "Staggered list items for invoices",
-      "Scale in for modals"
-    ]
+    "animations": {
+      "fade_in_up": {
+        "initial": { "opacity": 0, "y": 20 },
+        "animate": { "opacity": 1, "y": 0 }
+      },
+      "stagger_children": {
+        "animate": { "transition": { "staggerChildren": 0.1 } }
+      },
+      "hover_scale": {
+        "whileHover": { "scale": 1.02 }
+      },
+      "number_counter": "Use framer-motion 'animate' to count up numbers in stats cards."
+    }
   },
-  "accessibility": {
-    "rules": [
-      "Text contrast must meet APCA standards.",
-      "Interactive elements must have aria-labels.",
-      "Focus states must be visible (ring-2 ring-primary).",
-      "Data-testid attributes on all interactive elements."
-    ]
+  "assets": {
+    "images": [
+      {
+        "category": "backgrounds",
+        "url": "https://images.pexels.com/photos/18545023/pexels-photo-18545023.jpeg",
+        "description": "Abstract dark blockchain network for hero backgrounds or overlays."
+      },
+      {
+        "category": "3d_elements",
+        "url": "https://images.pexels.com/photos/8830900/pexels-photo-8830900.jpeg",
+        "description": "3D floating crypto coins for success states or hero sections."
+      }
+    ],
+    "icons": "lucide-react"
   },
-  "universal_guidelines": [
-    "Do not use gradients for text unless it's a massive headline.",
-    "Avoid 'Inter' for headings.",
-    "Use 'sonner' for toasts.",
-    "Use 'recharts' for data visualization.",
-    "Mobile-first responsive design.",
-    "Dark mode is the default and only mode."
+  "instructions_to_main_agent": [
+    "1. IMPLEMENT GLOBAL NOISE: Add a fixed overlay with noise texture in App.js/App.css to immediately elevate the premium feel.",
+    "2. REFINE TYPOGRAPHY: Ensure all headings use 'Space Grotesk' with 'tracking-tight'. Use 'JetBrains Mono' for ALL numbers (amounts, dates, addresses).",
+    "3. ANIMATE EVERYTHING: Use Framer Motion for page transitions, list entrances, and hover states. Static pages are forbidden.",
+    "4. MOBILE FIRST: Ensure the dashboard collapses gracefully. Use a bottom sheet or slide-over menu for mobile navigation.",
+    "5. GLASSMORPHISM: Use the defined glassmorphism classes for the invoice card and dashboard widgets.",
+    "6. TIPPING: Add a tipping UI in the client invoice view using a segmented control or slider.",
+    "7. CHAIN SELECTION: Use a visual selector (with icons) for USDT/USDC chains (ERC20, TRC20, BEP20).",
+    "8. DATA-TESTID: Add data-testid to all interactive elements (buttons, inputs, cards) for testing."
   ],
-  "instructions_to_main_agent": "You are building a Crypto Payment SaaS. The design must be 'Dark Mode' by default. Use the provided image URLs for backgrounds and visuals. Implement the 'Control Room' grid for the Admin Dashboard and a simpler, mobile-optimized layout for the Client Portal. Use 'Space Grotesk' for all headings to give it that Web3 feel. Ensure all crypto addresses are displayed in 'JetBrains Mono'. Use the 'sonner' library for notifications (e.g., 'Payment Sent')."
+  "universal_guidelines": [
+    "Do not use gradients for text unless it's a very large hero title.",
+    "Avoid 'Inter' for headings. Use Space Grotesk.",
+    "Never use pure black (#000000) for backgrounds; use #050505 or #0A0A0B.",
+    "Always add hover states to interactive elements.",
+    "Use 'sonner' for all toast notifications."
+  ]
 }
