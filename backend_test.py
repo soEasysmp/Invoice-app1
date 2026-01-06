@@ -138,11 +138,12 @@ class CryptoPaymentAPITester:
         """Test staff member creation"""
         if not self.admin_token:
             self.log_test("Staff Creation", False, "No admin token available")
-            return None
+            return None, None
 
         staff_data = {
             "name": "Test Staff Member",
             "email": f"staff_{datetime.now().strftime('%H%M%S')}@test.com",
+            "password": "StaffPass123!",
             "ltc_address": "ltc1qtest123456789",
             "usdt_address": "0xtest123456789abcdef",
             "usdc_address": "0xtest987654321fedcba"
@@ -157,7 +158,7 @@ class CryptoPaymentAPITester:
             headers=self.get_auth_headers(self.admin_token)
         )
         
-        return response.get('id') if success else None
+        return response.get('id') if success else None, staff_data if success else None
 
     def test_staff_list(self, token):
         """Test staff listing"""
