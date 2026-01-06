@@ -23,6 +23,7 @@ const StaffManagement = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    password: '',
     ltc_address: '',
     usdt_address: '',
     usdc_address: ''
