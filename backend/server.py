@@ -101,6 +101,8 @@ class Invoice(BaseModel):
     payment_address: Optional[str] = None
     payment_addresses: Optional[dict] = None
     tx_hash: Optional[str] = None
+    tip_amount: Optional[float] = 0.0
+    tip_paid: Optional[bool] = False
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     paid_at: Optional[datetime] = None
 
