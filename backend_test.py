@@ -171,7 +171,41 @@ class CryptoPaymentAPITester:
         )
         return success, response
 
-    def test_invoice_creation(self, staff_id, client_id):
+    def test_staff_login(self, email, password):
+        """Test staff login functionality"""
+        login_data = {"email": email, "password": password}
+        
+        success, response = self.run_test(
+            "Staff Login",
+            "POST",
+            "auth/staff/login",
+            200,
+            data=login_data
+        )
+        
+        return success, response.get('access_token') if success else None
+
+    def test_staff_dashboard_stats(self, token):
+        """Test staff dashboard stats endpoint"""
+        success, response = self.run_test(
+            "Staff Dashboard Stats",
+            "GET",
+            "dashboard/stats",
+            200,
+            headers=self.get_auth_headers(token)
+        )
+        return success, response
+
+    def test_staff_invoice_list(self, token):
+        """Test staff invoice listing (should only see their assigned invoices)"""
+        success, response = self.run_test(
+            "Staff Invoice List",
+            "GET",
+            "invoices",
+            200,
+            headers=self.get_auth_headers(token)
+        )
+        return success, response
         """Test invoice creation"""
         if not self.admin_token or not staff_id or not client_id:
             self.log_test("Invoice Creation", False, "Missing required data")
