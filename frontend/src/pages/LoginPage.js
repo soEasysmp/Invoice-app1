@@ -12,7 +12,7 @@ import axios from 'axios';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { login, register } = useAuth();
+  const { login, staffLogin, register } = useAuth();
   
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({ 
@@ -48,19 +48,13 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/auth/staff/login`, {
-        email: loginData.email,
-        password: loginData.password
-      });
-      
-      const { access_token, user } = response.data;
-      localStorage.setItem('token', access_token);
-      
+    const result = await staffLogin(loginData.email, loginData.password);
+    
+    if (result.success) {
       toast.success('Staff login successful!');
-      window.location.href = '/staff';
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Staff login failed');
+      navigate('/staff');
+    } else {
+      toast.error(result.error);
     }
     setLoading(false);
   };
