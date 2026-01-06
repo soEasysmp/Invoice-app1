@@ -321,21 +321,51 @@ async def create_invoice(invoice_data: InvoiceCreate, current_user: User = Depen
         raise HTTPException(status_code=404, detail="Staff not found")
     
     payment_address = None
-    if invoice_data.currency == "LTC":
-        payment_address = staff.get("ltc_address")
-    elif invoice_data.currency == "USDT":
-        payment_address = staff.get("usdt_address")
-    elif invoice_data.currency == "USDC":
-        payment_address = staff.get("usdc_address")
+    payment_addresses = {}
     
-    if not payment_address:
-        raise HTTPException(status_code=400, detail=f"Staff does not have {invoice_data.currency} address")
+    if invoice_data.currency == "CRYPTO":
+        if staff.get("ltc_address"):
+            payment_addresses["LTC"] = staff.get("ltc_address")
+        if staff.get("usdt_address"):
+            payment_addresses["USDT"] = staff.get("usdt_address")
+        if staff.get("usdc_address"):
+            payment_addresses["USDC"] = staff.get("usdc_address")
+        
+        if not payment_addresses:
+            raise HTTPException(status_code=400, detail="Staff does not have any crypto addresses")
+    else:
+        if invoice_data.currency == "LTC":
+            payment_address = staff.get("ltc_address")
+        elif invoice_data.currency == "USDT":
+            payment_address = staff.get("usdt_address")
+        elif invoice_data.currency == "USDC":
+            payment_address = staff.get("usdc_address")
+        
+        if not payment_address:
+            raise HTTPException(status_code=400, detail=f"Staff does not have {invoice_data.currency} address")
     
-    invoice_obj = Invoice(**invoice_data.model_dump(), payment_address=payment_address)
+    invoice_obj = Invoice(
+        **invoice_data.model_dump(exclude={'auto_generate', 'frequency'}),
+        payment_address=payment_address,
+        payment_addresses=payment_addresses if payment_addresses else None
+    )
     doc = invoice_obj.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
     
     await db.invoices.insert_one(doc)
+    
+    if invoice_data.auto_generate:
+        await db.auto_invoices.insert_one({
+            "staff_id": invoice_data.staff_id,
+            "client_id": invoice_data.client_id,
+            "amount": invoice_data.amount,
+            "currency": invoice_data.currency,
+            "description": invoice_data.description,
+            "frequency": invoice_data.frequency,
+            "last_generated": datetime.now(timezone.utc).isoformat(),
+            "active": True
+        })
+    
     return invoice_obj
 
 @api_router.get("/invoices", response_model=List[Invoice])
