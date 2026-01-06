@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-01-06T06:10:32.628901",
-  "total_tests": 16,
-  "passed_tests": 15,
-  "success_rate": "93.8%",
+  "timestamp": "2026-01-06T09:47:26.308604",
+  "total_tests": 19,
+  "passed_tests": 17,
+  "success_rate": "89.5%",
   "results": [
     {
       "test": "Admin Registration",
@@ -45,6 +45,21 @@
       "details": ""
     },
     {
+      "test": "Staff Login",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Staff Dashboard Stats",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Staff Invoice List",
+      "success": true,
+      "details": ""
+    },
+    {
       "test": "Get Client Info",
       "success": true,
       "details": ""
@@ -81,8 +96,8 @@
     },
     {
       "test": "Client Accessing Admin Endpoint",
-      "success": true,
-      "details": ""
+      "success": false,
+      "details": "Expected 403, got 422 - [{'type': 'missing', 'loc': ['body', 'password'], 'msg': 'Field required', 'input': {'name': 'Test', 'email': 'test@test.com'}, 'url': 'https://errors.pydantic.dev/2.12/v/missing'}]"
     }
   ]
 }
