@@ -184,9 +184,10 @@ const InvoiceManagement = () => {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-[#0A0A0B] border-border text-white">
-                        <SelectItem value="LTC">LTC</SelectItem>
-                        <SelectItem value="USDT">USDT</SelectItem>
-                        <SelectItem value="USDC">USDC</SelectItem>
+                        <SelectItem value="CRYPTO">Crypto (All Addresses)</SelectItem>
+                        <SelectItem value="LTC">LTC Only</SelectItem>
+                        <SelectItem value="USDT">USDT Only</SelectItem>
+                        <SelectItem value="USDC">USDC Only</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -202,6 +203,40 @@ const InvoiceManagement = () => {
                     required
                     data-testid="description-input"
                   />
+                </div>
+
+                <div className="space-y-3 p-3 bg-[#0A0A0B] rounded-lg border border-border">
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="auto_generate"
+                      checked={formData.auto_generate}
+                      onChange={(e) => setFormData({ ...formData, auto_generate: e.target.checked })}
+                      className="w-4 h-4"
+                      data-testid="auto-generate-checkbox"
+                    />
+                    <Label htmlFor="auto_generate" className="text-foreground cursor-pointer">
+                      Auto-generate this invoice
+                    </Label>
+                  </div>
+                  
+                  {formData.auto_generate && (
+                    <div className="space-y-2">
+                      <Label htmlFor="frequency" className="text-foreground text-sm">Frequency</Label>
+                      <Select
+                        value={formData.frequency}
+                        onValueChange={(value) => setFormData({ ...formData, frequency: value })}
+                      >
+                        <SelectTrigger className="bg-background border-input" data-testid="frequency-select">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[#0A0A0B] border-border text-white">
+                          <SelectItem value="weekly">Weekly</SelectItem>
+                          <SelectItem value="monthly">Monthly</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex justify-end gap-3 pt-4">
