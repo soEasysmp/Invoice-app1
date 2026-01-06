@@ -146,17 +146,23 @@ const InvoiceManagement = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="client_id" className="text-foreground">Client ID</Label>
-                  <Input
-                    id="client_id"
+                  <Label htmlFor="client" className="text-foreground">Client</Label>
+                  <Select
                     value={formData.client_id}
-                    onChange={(e) => setFormData({ ...formData, client_id: e.target.value })}
-                    className="bg-background border-input"
-                    placeholder="Enter client user ID"
+                    onValueChange={(value) => setFormData({ ...formData, client_id: value })}
                     required
-                    data-testid="client-id-input"
-                  />
-                  <p className="text-xs text-muted-foreground">Enter the client's user ID</p>
+                  >
+                    <SelectTrigger className="bg-background border-input" data-testid="client-select">
+                      <SelectValue placeholder="Select client" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#0A0A0B] border-border text-white">
+                      {clients.map((client) => (
+                        <SelectItem key={client.id} value={client.id}>
+                          {client.full_name} ({client.email})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
