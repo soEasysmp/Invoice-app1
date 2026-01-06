@@ -199,8 +199,17 @@ async def create_staff(staff_data: StaffCreate, current_user: User = Depends(get
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin access required")
     
-    staff_obj = Staff(**staff_data.model_dump())
+    existing = await db.staff.find_one({"email": staff_data.email})
+    if existing:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    
+    staff_dict = staff_data.model_dump()
+    password = staff_dict.pop("password")
+    hashed_password = hash_password(password)
+    
+    staff_obj = Staff(**staff_dict)
     doc = staff_obj.model_dump()
+    doc['password'] = hashed_password
     doc['created_at'] = doc['created_at'].isoformat()
     
     await db.staff.insert_one(doc)
