@@ -45,6 +45,11 @@ function App() {
                 <ClientDashboard />
               </PrivateRoute>
             } />
+            <Route path="/staff" element={
+              <PrivateRoute requiredRole="staff">
+                <StaffDashboard />
+              </PrivateRoute>
+            } />
             <Route path="/invoice/:id" element={
               <PrivateRoute>
                 <InvoiceDetail />
