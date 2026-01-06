@@ -14,16 +14,31 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initAuth = async () => {
       const savedToken = localStorage.getItem('token');
-      if (savedToken) {
+      const savedUser = localStorage.getItem('user');
+      
+      if (savedToken && savedUser) {
+        try {
+          const userData = JSON.parse(savedUser);
+          setUser(userData);
+          setToken(savedToken);
+        } catch (error) {
+          console.error('Auth restore failed:', error);
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          setToken(null);
+        }
+      } else if (savedToken) {
         try {
           const response = await axios.get(`${API}/auth/me`, {
             headers: { Authorization: `Bearer ${savedToken}` }
           });
           setUser(response.data);
           setToken(savedToken);
+          localStorage.setItem('user', JSON.stringify(response.data));
         } catch (error) {
           console.error('Auth check failed:', error);
           localStorage.removeItem('token');
+          localStorage.removeItem('user');
           setToken(null);
         }
       }
