@@ -183,6 +183,25 @@ const StaffManagement = () => {
                 </div>
 
                 <div className="space-y-2">
+                  <Label htmlFor="password" className="text-foreground">
+                    Password {editingStaff && '(leave blank to keep current)'}
+                  </Label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="password"
+                      type="password"
+                      value={formData.password}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      className="pl-10 bg-background border-input"
+                      required={!editingStaff}
+                      placeholder={editingStaff ? 'Leave blank to keep current' : 'Create password'}
+                      data-testid="staff-password-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
                   <Label htmlFor="ltc" className="text-foreground">Litecoin Address (LTC)</Label>
                   <div className="relative">
                     <Wallet className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
