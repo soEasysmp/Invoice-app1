@@ -321,9 +321,19 @@ class CryptoPaymentAPITester:
             self.test_dashboard_stats(self.client_token, "Client")
 
         # Test staff management
-        staff_id = self.test_staff_creation()
+        staff_id, staff_data = self.test_staff_creation()
         if self.admin_token:
             self.test_staff_list(self.admin_token)
+
+        # Test NEW staff login functionality
+        staff_token = None
+        if staff_data:
+            staff_login_success, staff_token = self.test_staff_login(staff_data['email'], staff_data['password'])
+            
+            if staff_token:
+                # Test staff dashboard and invoice access
+                self.test_staff_dashboard_stats(staff_token)
+                self.test_staff_invoice_list(staff_token)
 
         # Test invoice management
         invoice_id = None
