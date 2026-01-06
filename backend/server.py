@@ -78,6 +78,7 @@ class Staff(BaseModel):
 class StaffCreate(BaseModel):
     name: str
     email: EmailStr
+    password: str
     ltc_address: Optional[str] = None
     usdt_address: Optional[str] = None
     usdc_address: Optional[str] = None
