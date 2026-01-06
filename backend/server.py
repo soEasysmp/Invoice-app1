@@ -577,6 +577,69 @@ async def check_pending_payments():
     except Exception as e:
         logging.error(f"Error checking pending payments: {e}")
 
+async def generate_auto_invoices():
+    try:
+        auto_invoices = await db.auto_invoices.find({"active": True}, {"_id": 0}).to_list(100)
+        
+        for auto_invoice in auto_invoices:
+            last_generated = datetime.fromisoformat(auto_invoice['last_generated'])
+            frequency = auto_invoice.get('frequency', 'weekly')
+            
+            days_diff = (datetime.now(timezone.utc) - last_generated).days
+            
+            should_generate = False
+            if frequency == 'weekly' and days_diff >= 7:
+                should_generate = True
+            elif frequency == 'monthly' and days_diff >= 30:
+                should_generate = True
+            
+            if should_generate:
+                staff = await db.staff.find_one({"id": auto_invoice['staff_id']})
+                if not staff:
+                    continue
+                
+                payment_address = None
+                payment_addresses = {}
+                
+                if auto_invoice['currency'] == "CRYPTO":
+                    if staff.get("ltc_address"):
+                        payment_addresses["LTC"] = staff.get("ltc_address")
+                    if staff.get("usdt_address"):
+                        payment_addresses["USDT"] = staff.get("usdt_address")
+                    if staff.get("usdc_address"):
+                        payment_addresses["USDC"] = staff.get("usdc_address")
+                else:
+                    if auto_invoice['currency'] == "LTC":
+                        payment_address = staff.get("ltc_address")
+                    elif auto_invoice['currency'] == "USDT":
+                        payment_address = staff.get("usdt_address")
+                    elif auto_invoice['currency'] == "USDC":
+                        payment_address = staff.get("usdc_address")
+                
+                new_invoice = Invoice(
+                    staff_id=auto_invoice['staff_id'],
+                    client_id=auto_invoice['client_id'],
+                    amount=auto_invoice['amount'],
+                    currency=auto_invoice['currency'],
+                    description=auto_invoice['description'],
+                    payment_address=payment_address,
+                    payment_addresses=payment_addresses if payment_addresses else None
+                )
+                
+                doc = new_invoice.model_dump()
+                doc['created_at'] = doc['created_at'].isoformat()
+                await db.invoices.insert_one(doc)
+                
+                await db.auto_invoices.update_one(
+                    {"staff_id": auto_invoice['staff_id'], "client_id": auto_invoice['client_id']},
+                    {"$set": {"last_generated": datetime.now(timezone.utc).isoformat()}}
+                )
+                
+                logging.info(f"Auto-generated invoice for staff {auto_invoice['staff_id']}")
+                
+    except Exception as e:
+        logging.error(f"Error generating auto invoices: {e}")
+
 app.include_router(api_router)
 
 app.add_middleware(
