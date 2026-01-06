@@ -8,6 +8,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { Wallet, Lock, Mail, User } from 'lucide-react';
+import axios from 'axios';
 
 const LoginPage = () => {
   const navigate = useNavigate();
