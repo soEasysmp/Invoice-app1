@@ -30,9 +30,36 @@ const LoginPage = () => {
     
     if (result.success) {
       toast.success('Login successful!');
-      navigate(result.user.role === 'admin' ? '/admin' : '/dashboard');
+      if (result.user.role === 'admin') {
+        navigate('/admin');
+      } else if (result.user.role === 'staff') {
+        navigate('/staff');
+      } else {
+        navigate('/dashboard');
+      }
     } else {
       toast.error(result.error);
+    }
+    setLoading(false);
+  };
+
+  const handleStaffLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/auth/staff/login`, {
+        email: loginData.email,
+        password: loginData.password
+      });
+      
+      const { access_token, user } = response.data;
+      localStorage.setItem('token', access_token);
+      
+      toast.success('Staff login successful!');
+      window.location.href = '/staff';
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Staff login failed');
     }
     setLoading(false);
   };
