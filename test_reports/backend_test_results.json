@@ -1,0 +1,88 @@
+{
+  "timestamp": "2026-01-06T06:10:32.628901",
+  "total_tests": 16,
+  "passed_tests": 15,
+  "success_rate": "93.8%",
+  "results": [
+    {
+      "test": "Admin Registration",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Client Registration",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Admin Login",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Client Login",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Admin Dashboard Stats",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Client Dashboard Stats",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Staff Creation",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Staff List",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Get Client Info",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Invoice Creation",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Admin Invoice List",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Client Invoice List",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Invoice Detail",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Payment Status Check",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Unauthorized Staff Access",
+      "success": false,
+      "details": "Expected 401, got 403 - Not authenticated"
+    },
+    {
+      "test": "Client Accessing Admin Endpoint",
+      "success": true,
+      "details": ""
+    }
+  ]
+}
