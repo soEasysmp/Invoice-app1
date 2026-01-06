@@ -244,6 +244,19 @@ async def staff_login(credentials: UserLogin):
 async def get_me(current_user: User = Depends(get_current_user)):
     return current_user
 
+@api_router.get("/clients")
+async def list_clients(current_user: User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    clients = await db.users.find({"role": "client"}, {"_id": 0, "password": 0}).to_list(1000)
+    
+    for client in clients:
+        if isinstance(client['created_at'], str):
+            client['created_at'] = datetime.fromisoformat(client['created_at'])
+    
+    return clients
+
 @api_router.post("/staff", response_model=Staff)
 async def create_staff(staff_data: StaffCreate, current_user: User = Depends(get_current_user)):
     if current_user.role != "admin":
