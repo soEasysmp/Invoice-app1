@@ -659,8 +659,9 @@ logger = logging.getLogger(__name__)
 @app.on_event("startup")
 async def startup_event():
     scheduler.add_job(check_pending_payments, 'interval', minutes=2)
+    scheduler.add_job(generate_auto_invoices, 'interval', hours=24)
     scheduler.start()
-    logger.info("Payment monitoring started")
+    logger.info("Payment monitoring and auto-invoice generation started")
 
 @app.on_event("shutdown")
 async def shutdown_event():
