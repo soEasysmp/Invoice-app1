@@ -137,17 +137,38 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         token = credentials.credentials
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
+        role: str = payload.get("role")
         if email is None:
             raise HTTPException(status_code=401, detail="Invalid token")
         
-        user = await db.users.find_one({"email": email}, {"_id": 0, "password": 0})
-        if user is None:
-            raise HTTPException(status_code=401, detail="User not found")
-        
-        if isinstance(user['created_at'], str):
-            user['created_at'] = datetime.fromisoformat(user['created_at'])
-        
-        return User(**user)
+        # Check if it's a staff member first
+        if role == "staff":
+            staff = await db.staff.find_one({"email": email}, {"_id": 0, "password": 0})
+            if staff is None:
+                raise HTTPException(status_code=401, detail="Staff not found")
+            
+            if isinstance(staff['created_at'], str):
+                staff['created_at'] = datetime.fromisoformat(staff['created_at'])
+            
+            # Convert staff to User format
+            user_data = User(
+                id=staff['id'],
+                email=staff['email'],
+                full_name=staff['name'],
+                role='staff',
+                created_at=staff['created_at']
+            )
+            return user_data
+        else:
+            # Regular user lookup
+            user = await db.users.find_one({"email": email}, {"_id": 0, "password": 0})
+            if user is None:
+                raise HTTPException(status_code=401, detail="User not found")
+            
+            if isinstance(user['created_at'], str):
+                user['created_at'] = datetime.fromisoformat(user['created_at'])
+            
+            return User(**user)
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
