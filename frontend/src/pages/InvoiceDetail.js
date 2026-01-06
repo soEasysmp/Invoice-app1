@@ -140,24 +140,50 @@ const InvoiceDetail = () => {
                   </AlertDescription>
                 </Alert>
 
-                <div>
-                  <label className="text-sm text-muted-foreground mb-2 block">Payment Address</label>
-                  <div className="flex gap-2">
-                    <div className="flex-1 p-3 bg-[#121214] rounded-lg border border-border">
-                      <p className="text-white font-mono break-all" data-testid="payment-address">
-                        {invoice.payment_address}
-                      </p>
-                    </div>
-                    <Button
-                      onClick={() => copyToClipboard(invoice.payment_address)}
-                      variant="outline"
-                      size="icon"
-                      data-testid="copy-address-button"
-                    >
-                      <Copy className="w-4 h-4" />
-                    </Button>
+                {invoice.currency === 'CRYPTO' && invoice.payment_addresses ? (
+                  <div className="space-y-4">
+                    <p className="text-sm text-muted-foreground">Choose any cryptocurrency to pay:</p>
+                    {Object.entries(invoice.payment_addresses).map(([crypto, address]) => (
+                      <div key={crypto}>
+                        <label className="text-sm text-muted-foreground mb-2 block font-semibold">{crypto} Address</label>
+                        <div className="flex gap-2">
+                          <div className="flex-1 p-3 bg-[#121214] rounded-lg border border-border">
+                            <p className="text-white font-mono break-all text-sm" data-testid={`payment-address-${crypto}`}>
+                              {address}
+                            </p>
+                          </div>
+                          <Button
+                            onClick={() => copyToClipboard(address)}
+                            variant="outline"
+                            size="icon"
+                            data-testid={`copy-address-button-${crypto}`}
+                          >
+                            <Copy className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div>
+                ) : (
+                  <div>
+                    <label className="text-sm text-muted-foreground mb-2 block">Payment Address ({invoice.currency})</label>
+                    <div className="flex gap-2">
+                      <div className="flex-1 p-3 bg-[#121214] rounded-lg border border-border">
+                        <p className="text-white font-mono break-all" data-testid="payment-address">
+                          {invoice.payment_address}
+                        </p>
+                      </div>
+                      <Button
+                        onClick={() => copyToClipboard(invoice.payment_address)}
+                        variant="outline"
+                        size="icon"
+                        data-testid="copy-address-button"
+                      >
+                        <Copy className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
 
                 <div className="flex gap-3">
                   <Button
