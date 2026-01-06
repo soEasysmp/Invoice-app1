@@ -26,8 +26,10 @@ const InvoiceManagement = () => {
     staff_id: '',
     client_id: '',
     amount: '',
-    currency: 'USDT',
-    description: ''
+    currency: 'CRYPTO',
+    description: '',
+    auto_generate: false,
+    frequency: 'weekly'
   });
 
   useEffect(() => {
