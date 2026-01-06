@@ -190,6 +190,32 @@ async def login(credentials: UserLogin):
     access_token = create_access_token(data={"sub": user.email})
     return Token(access_token=access_token, token_type="bearer", user=user)
 
+@api_router.post("/auth/staff/login", response_model=Token)
+async def staff_login(credentials: UserLogin):
+    staff_doc = await db.staff.find_one({"email": credentials.email})
+    if not staff_doc:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    if not verify_password(credentials.password, staff_doc['password']):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    staff_doc.pop('password')
+    staff_doc.pop('_id')
+    
+    if isinstance(staff_doc['created_at'], str):
+        staff_doc['created_at'] = datetime.fromisoformat(staff_doc['created_at'])
+    
+    user_data = User(
+        id=staff_doc['id'],
+        email=staff_doc['email'],
+        full_name=staff_doc['name'],
+        role='staff',
+        created_at=staff_doc['created_at']
+    )
+    
+    access_token = create_access_token(data={"sub": user_data.email, "role": "staff"})
+    return Token(access_token=access_token, token_type="bearer", user=user_data)
+
 @api_router.get("/auth/me", response_model=User)
 async def get_me(current_user: User = Depends(get_current_user)):
     return current_user
