@@ -4,6 +4,7 @@ import { Toaster } from '@/components/ui/sonner';
 import LoginPage from './pages/LoginPage';
 import ClientDashboard from './pages/ClientDashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import StaffDashboard from './pages/StaffDashboard';
 import StaffManagement from './pages/StaffManagement';
 import InvoiceManagement from './pages/InvoiceManagement';
 import InvoiceDetail from './pages/InvoiceDetail';
