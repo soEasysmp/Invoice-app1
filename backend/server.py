@@ -241,15 +241,21 @@ async def update_staff(staff_id: str, staff_data: StaffCreate, current_user: Use
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin access required")
     
+    update_dict = staff_data.model_dump()
+    if 'password' in update_dict and update_dict['password']:
+        update_dict['password'] = hash_password(update_dict['password'])
+    else:
+        update_dict.pop('password', None)
+    
     result = await db.staff.update_one(
         {"id": staff_id},
-        {"$set": staff_data.model_dump()}
+        {"$set": update_dict}
     )
     
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="Staff not found")
     
-    updated = await db.staff.find_one({"id": staff_id}, {"_id": 0})
+    updated = await db.staff.find_one({"id": staff_id}, {"_id": 0, "password": 0})
     if isinstance(updated['created_at'], str):
         updated['created_at'] = datetime.fromisoformat(updated['created_at'])
     
