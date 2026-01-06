@@ -290,7 +290,7 @@ class CryptoPaymentAPITester:
                 "POST",
                 "staff",
                 403,
-                data={"name": "Test", "email": "test@test.com"},
+                data={"name": "Test", "email": "test@test.com", "password": "test123"},
                 headers=self.get_auth_headers(self.client_token)
             )
 
