@@ -86,6 +86,7 @@ const StaffManagement = () => {
     setFormData({
       name: staffMember.name,
       email: staffMember.email,
+      password: '',
       ltc_address: staffMember.ltc_address || '',
       usdt_address: staffMember.usdt_address || '',
       usdc_address: staffMember.usdc_address || ''
@@ -98,6 +99,7 @@ const StaffManagement = () => {
     setFormData({
       name: '',
       email: '',
+      password: '',
       ltc_address: '',
       usdt_address: '',
       usdc_address: ''
