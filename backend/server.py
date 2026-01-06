@@ -70,8 +70,11 @@ class Staff(BaseModel):
     name: str
     email: EmailStr
     ltc_address: Optional[str] = None
+    ltc_chain: Optional[str] = "Litecoin"
     usdt_address: Optional[str] = None
+    usdt_chain: Optional[str] = "ERC20"
     usdc_address: Optional[str] = None
+    usdc_chain: Optional[str] = "ERC20"
     active: bool = True
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
@@ -80,8 +83,11 @@ class StaffCreate(BaseModel):
     email: EmailStr
     password: str
     ltc_address: Optional[str] = None
+    ltc_chain: Optional[str] = "Litecoin"
     usdt_address: Optional[str] = None
+    usdt_chain: Optional[str] = "ERC20"
     usdc_address: Optional[str] = None
+    usdc_chain: Optional[str] = "ERC20"
 
 class Invoice(BaseModel):
     model_config = ConfigDict(extra="ignore")
