@@ -320,6 +320,8 @@ async def list_invoices(current_user: User = Depends(get_current_user), status: 
     
     if current_user.role == "client":
         query["client_id"] = current_user.id
+    elif current_user.role == "staff":
+        query["staff_id"] = current_user.id
     
     if status:
         query["status"] = status
