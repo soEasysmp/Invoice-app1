@@ -93,6 +93,7 @@ class Invoice(BaseModel):
     description: str
     status: str = "pending"
     payment_address: Optional[str] = None
+    payment_addresses: Optional[dict] = None
     tx_hash: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     paid_at: Optional[datetime] = None
@@ -103,6 +104,8 @@ class InvoiceCreate(BaseModel):
     amount: float
     currency: str
     description: str
+    auto_generate: Optional[bool] = False
+    frequency: Optional[str] = "weekly"
 
 class Payment(BaseModel):
     model_config = ConfigDict(extra="ignore")
