@@ -133,7 +133,54 @@ const LoginPage = () => {
                   disabled={loading}
                   data-testid="login-submit-button"
                 >
-                  {loading ? 'Logging in...' : 'Login'}
+                  {loading ? 'Logging in...' : 'Login as Client/Admin'}
+                </Button>
+              </form>
+            </TabsContent>
+
+            <TabsContent value="staff">
+              <form onSubmit={handleStaffLogin} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="staff-email" className="text-foreground">Staff Email</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="staff-email"
+                      type="email"
+                      placeholder="staff@email.com"
+                      className="pl-10 bg-background border-input"
+                      value={loginData.email}
+                      onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+                      required
+                      data-testid="staff-email-input"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="staff-password" className="text-foreground">Password</Label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="staff-password"
+                      type="password"
+                      placeholder="Enter password"
+                      className="pl-10 bg-background border-input"
+                      value={loginData.password}
+                      onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                      required
+                      data-testid="staff-password-input"
+                    />
+                  </div>
+                </div>
+                
+                <Button
+                  type="submit"
+                  className="w-full btn-primary"
+                  disabled={loading}
+                  data-testid="staff-login-button"
+                >
+                  {loading ? 'Logging in...' : 'Login as Staff'}
                 </Button>
               </form>
             </TabsContent>
