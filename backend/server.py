@@ -459,16 +459,54 @@ async def check_payment(invoice_id: str, current_user: User = Depends(get_curren
 
 async def check_blockchain_payment(address: str, currency: str, expected_amount: float):
     try:
-        if currency in ["USDT", "USDC"]:
+        if currency == "LTC":
+            blockcypher_token = os.environ.get("BLOCKCYPHER_TOKEN", "9cfa7f7aa1ea4338b6263e529378f804")
+            url = f"https://api.blockcypher.com/v1/ltc/main/addrs/{address}/balance?token={blockcypher_token}"
+            
+            async with httpx.AsyncClient() as client:
+                response = await client.get(url)
+                if response.status_code == 200:
+                    data = response.json()
+                    balance_ltc = data.get('balance', 0) / 100000000
+                    
+                    if balance_ltc >= expected_amount:
+                        tx_url = f"https://api.blockcypher.com/v1/ltc/main/addrs/{address}/full?token={blockcypher_token}"
+                        tx_response = await client.get(tx_url)
+                        if tx_response.status_code == 200:
+                            tx_data = tx_response.json()
+                            if tx_data.get('txs'):
+                                latest_tx = tx_data['txs'][0]
+                                return {"detected": True, "tx_hash": latest_tx.get('hash', 'ltc_payment')}
+        
+        elif currency in ["USDT", "USDC"]:
             infura_key = os.environ.get("INFURA_API_KEY", "")
             if not infura_key:
+                logging.warning("INFURA_API_KEY not set, skipping ERC20 check")
                 return None
             
             w3 = Web3(Web3.HTTPProvider(f"https://mainnet.infura.io/v3/{infura_key}"))
             
-            balance = w3.eth.get_balance(address)
-            if balance > 0:
-                return {"detected": True, "tx_hash": "simulated_tx_hash"}
+            if currency == "USDT":
+                contract_address = "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+            else:
+                contract_address = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            
+            contract_abi = [
+                {
+                    "constant": True,
+                    "inputs": [{"name": "_owner", "type": "address"}],
+                    "name": "balanceOf",
+                    "outputs": [{"name": "balance", "type": "uint256"}],
+                    "type": "function"
+                }
+            ]
+            
+            contract = w3.eth.contract(address=contract_address, abi=contract_abi)
+            balance = contract.functions.balanceOf(address).call()
+            balance_tokens = balance / (10 ** 6)
+            
+            if balance_tokens >= expected_amount:
+                return {"detected": True, "tx_hash": f"{currency}_payment_detected"}
         
         return None
     except Exception as e:
