@@ -41,10 +41,11 @@ const InvoiceManagement = () => {
       const [invoicesRes, staffRes, clientsRes] = await Promise.all([
         axios.get(`${API}/invoices`, { headers: getAuthHeaders() }),
         axios.get(`${API}/staff`, { headers: getAuthHeaders() }),
-        axios.get(`${API}/auth/me`, { headers: getAuthHeaders() })
+        axios.get(`${API}/clients`, { headers: getAuthHeaders() })
       ]);
       setInvoices(invoicesRes.data);
       setStaff(staffRes.data);
+      setClients(clientsRes.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to load data');
