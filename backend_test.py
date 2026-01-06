@@ -206,6 +206,8 @@ class CryptoPaymentAPITester:
             headers=self.get_auth_headers(token)
         )
         return success, response
+
+    def test_invoice_creation(self, staff_id, client_id):
         """Test invoice creation"""
         if not self.admin_token or not staff_id or not client_id:
             self.log_test("Invoice Creation", False, "Missing required data")
