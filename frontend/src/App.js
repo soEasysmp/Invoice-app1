@@ -27,7 +27,7 @@ const PrivateRoute = ({ children, requiredRole }) => {
   }
 
   if (requiredRole && user.role !== requiredRole) {
-    return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} />;
+    return <Navigate to={user.role === 'admin' ? '/admin' : user.role === 'staff' ? '/staff' : '/dashboard'} />;
   }
 
   return children;
