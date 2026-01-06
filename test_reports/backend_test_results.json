@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-01-06T09:47:26.308604",
+  "timestamp": "2026-01-06T09:47:46.351283",
   "total_tests": 19,
-  "passed_tests": 17,
-  "success_rate": "89.5%",
+  "passed_tests": 18,
+  "success_rate": "94.7%",
   "results": [
     {
       "test": "Admin Registration",
@@ -96,8 +96,8 @@
     },
     {
       "test": "Client Accessing Admin Endpoint",
-      "success": false,
-      "details": "Expected 403, got 422 - [{'type': 'missing', 'loc': ['body', 'password'], 'msg': 'Field required', 'input': {'name': 'Test', 'email': 'test@test.com'}, 'url': 'https://errors.pydantic.dev/2.12/v/missing'}]"
+      "success": true,
+      "details": ""
     }
   ]
 }
